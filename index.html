@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AgroControl Lab Pro - Semana 9</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body>
+  <header class="hero">
+    <nav class="topbar">
+      <div class="brand">
+        <span class="brand-icon">🌱</span>
+        <div>
+          <strong>AgroControl Lab Pro</strong>
+          <small>Semana 9 · Pruebas, depuración y entrega incremental</small>
+        </div>
+      </div>
+      <button id="btnToggleTheme" class="ghost-btn" type="button">Modo oscuro</button>
+    </nav>
+
+    <section class="hero-content">
+      <div>
+        <p class="eyebrow">Proyecto base para VS Code + Live Server</p>
+        <h1>Gestión rural con validaciones, consola, inspector y depurador</h1>
+        <p>
+          Registra actividades productivas, valida datos, guarda información en el navegador,
+          analiza el sistema con DevTools y entrega una mejora funcional demostrable.
+        </p>
+        <div class="hero-actions">
+          <a href="#registro" class="primary-btn">Registrar actividad</a>
+          <a href="#diagnostico" class="secondary-btn">Abrir diagnóstico</a>
+        </div>
+      </div>
+      <aside class="status-card">
+        <span class="status-dot" id="systemStatusDot"></span>
+        <h2 id="systemStatusTitle">Sistema listo</h2>
+        <p id="systemStatusText">Ejecuta pruebas y revisa la consola del navegador con F12.</p>
+      </aside>
+    </section>
+  </header>
+
+  <main>
+    <section class="dashboard" aria-label="Resumen del sistema">
+      <article class="metric-card">
+        <span>Total actividades</span>
+        <strong id="metricTotal">0</strong>
+      </article>
+      <article class="metric-card">
+        <span>Producción total</span>
+        <strong id="metricProduction">0</strong>
+      </article>
+      <article class="metric-card">
+        <span>Gastos</span>
+        <strong id="metricExpenses">$0</strong>
+      </article>
+      <article class="metric-card">
+        <span>Último registro</span>
+        <strong id="metricLast">Sin datos</strong>
+      </article>
+    </section>
+
+    <section class="grid-layout">
+      <article id="registro" class="panel form-panel">
+        <div class="section-title">
+          <p class="eyebrow">Feature semanal</p>
+          <h2>Registro de actividad productiva</h2>
+          <p>Completa el formulario. El sistema validará los datos antes de guardar.</p>
+        </div>
+
+        <form id="activityForm" novalidate>
+          <div class="form-grid">
+            <label>
+              Tipo de actividad
+              <select id="activityType" name="type">
+                <option value="">Seleccione...</option>
+                <option value="leche">Producción de leche</option>
+                <option value="maiz">Cosecha de maíz</option>
+                <option value="gasto">Gasto</option>
+                <option value="inventario">Inventario</option>
+                <option value="mantenimiento">Mantenimiento</option>
+              </select>
+              <small class="field-error" data-error-for="activityType"></small>
+            </label>
+
+            <label>
+              Nombre de la actividad
+              <input id="activityName" name="name" type="text" placeholder="Ej: Ordeño de la mañana" />
+              <small class="field-error" data-error-for="activityName"></small>
+            </label>
+
+            <label>
+              Cantidad
+              <input id="activityQuantity" name="quantity" type="number" placeholder="Ej: 35" />
+              <small class="field-error" data-error-for="activityQuantity"></small>
+            </label>
+
+            <label>
+              Unidad
+              <select id="activityUnit" name="unit">
+                <option value="">Seleccione...</option>
+                <option value="litros">Litros</option>
+                <option value="kilos">Kilos</option>
+                <option value="pesos">Pesos</option>
+                <option value="unidades">Unidades</option>
+                <option value="horas">Horas</option>
+              </select>
+              <small class="field-error" data-error-for="activityUnit"></small>
+            </label>
+
+            <label>
+              Fecha
+              <input id="activityDate" name="date" type="date" />
+              <small class="field-error" data-error-for="activityDate"></small>
+            </label>
+
+            <label>
+              Responsable
+              <input id="activityResponsible" name="responsible" type="text" placeholder="Ej: Laura" />
+              <small class="field-error" data-error-for="activityResponsible"></small>
+            </label>
+          </div>
+
+          <label>
+            Observación
+            <textarea id="activityNote" name="note" maxlength="160" placeholder="Describe brevemente la actividad"></textarea>
+            <small class="field-error" data-error-for="activityNote"></small>
+          </label>
+
+          <div class="form-actions">
+            <button class="primary-btn" type="submit">Guardar actividad</button>
+            <button id="btnResetForm" class="secondary-btn" type="button">Limpiar formulario</button>
+          </div>
+        </form>
+      </article>
+
+      <article class="panel chart-panel">
+        <div class="section-title">
+          <p class="eyebrow">Visualización</p>
+          <h2>Actividades por tipo</h2>
+          <p>Este gráfico se actualiza con los registros guardados.</p>
+        </div>
+        <canvas id="activityChart" width="520" height="320" aria-label="Gráfico de actividades"></canvas>
+      </article>
+    </section>
+
+    <section class="panel">
+      <div class="section-title row-title">
+        <div>
+          <p class="eyebrow">Consulta y pruebas</p>
+          <h2>Registros guardados</h2>
+          <p>Usa filtros y búsqueda para comprobar la integración del proyecto.</p>
+        </div>
+        <div class="toolbar">
+          <button id="btnLoadSeed" class="secondary-btn" type="button">Cargar datos de prueba</button>
+          <button id="btnExport" class="secondary-btn" type="button">Exportar JSON</button>
+          <button id="btnClearAll" class="danger-btn" type="button">Limpiar datos</button>
+        </div>
+      </div>
+
+      <div class="filters">
+        <input id="searchInput" type="search" placeholder="Buscar por nombre o responsable" />
+        <select id="filterType">
+          <option value="todos">Todos los tipos</option>
+          <option value="leche">Producción de leche</option>
+          <option value="maiz">Cosecha de maíz</option>
+          <option value="gasto">Gasto</option>
+          <option value="inventario">Inventario</option>
+          <option value="mantenimiento">Mantenimiento</option>
+        </select>
+      </div>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Tipo</th>
+              <th>Actividad</th>
+              <th>Cantidad</th>
+              <th>Responsable</th>
+              <th>Acción</th>
+            </tr>
+          </thead>
+          <tbody id="activityTableBody"></tbody>
+        </table>
+      </div>
+      <p id="emptyState" class="empty-state">No hay registros todavía. Carga datos de prueba o registra una actividad.</p>
+    </section>
+
+    <section id="diagnostico" class="panel diagnostic-panel">
+      <div class="section-title">
+        <p class="eyebrow">DevTools</p>
+        <h2>Centro de diagnóstico</h2>
+        <p>
+          Usa estos botones para generar mensajes en consola, revisar datos y practicar depuración controlada.
+        </p>
+      </div>
+
+      <div class="diagnostic-grid">
+        <button id="btnSystemCheck" class="secondary-btn" type="button">Revisar sistema</button>
+        <button id="btnConsoleTable" class="secondary-btn" type="button">Ver datos en consola</button>
+        <button id="btnValidationTest" class="secondary-btn" type="button">Probar validaciones</button>
+        <button id="btnLocalStorage" class="secondary-btn" type="button">Revisar localStorage</button>
+        <button id="btnControlledError" class="danger-btn" type="button">Simular error controlado</button>
+      </div>
+
+      <div class="debug-output" id="debugOutput">
+        Esperando diagnóstico... Abre la consola con F12 para ver más detalles.
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>AgroControl Lab Pro · Proyecto educativo para pruebas, depuración y entrega incremental.</p>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/seed-data.js"></script>
+  <script src="js/database.js"></script>
+  <script src="js/validators.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/debug-panel.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

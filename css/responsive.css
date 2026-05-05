@@ -1,0 +1,15 @@
+@media (max-width: 920px) {
+  .hero-content, .grid-layout { grid-template-columns: 1fr; }
+  .dashboard { grid-template-columns: repeat(2, 1fr); margin-top: -46px; }
+  .diagnostic-grid { grid-template-columns: repeat(2, 1fr); }
+  .row-title { flex-direction: column; }
+}
+
+@media (max-width: 620px) {
+  .topbar, .filters, .form-actions { align-items: stretch; flex-direction: column; }
+  .dashboard, .form-grid, .diagnostic-grid { grid-template-columns: 1fr; }
+  .toolbar { flex-direction: column; align-items: stretch; width: 100%; }
+  .primary-btn, .secondary-btn, .danger-btn, .ghost-btn { width: 100%; }
+  h1 { font-size: 2.25rem; }
+  .hero { padding-bottom: 84px; }
+}

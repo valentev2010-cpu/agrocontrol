@@ -1,0 +1,11 @@
+[
+  {
+    "type": "leche",
+    "name": "Ordeño de prueba",
+    "quantity": 35,
+    "unit": "litros",
+    "date": "2026-05-01",
+    "responsible": "Equipo 1",
+    "note": "Registro de ejemplo para validar funcionamiento."
+  }
+]
