@@ -80,6 +80,7 @@ function bindEvents() {
 function init() {
   bindEvents();
   renderApp();
+  document.body.classList.add("app-loaded");
   console.info(`${APP_CONFIG.appName} v${APP_CONFIG.version} iniciado correctamente.`);
   console.info("Abre DevTools con F12 y explora Console, Elements, Sources y Application.");
 }
